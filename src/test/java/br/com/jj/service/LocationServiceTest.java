@@ -1,8 +1,8 @@
 package br.com.jj.service;
 
 import static br.com.jj.matcher.OwnMatcher.fallsOnMonday;
-import static br.com.jj.utils.DateUtils.getDateWithDifferenceOfDays;
-import static br.com.jj.utils.DateUtils.isSameDate;
+import static br.com.jj.matcher.OwnMatcher.isToday;
+import static br.com.jj.matcher.OwnMatcher.isTodayWithDifferenceDays;
 import static br.com.jj.utils.DateUtils.verifyDayOfWeek;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -57,8 +57,10 @@ public class LocationServiceTest {
 
 		// verification
 		error.checkThat(location.getPrice(), is(equalTo(10.0)));
-		error.checkThat(isSameDate(location.getLocationDate(), LocalDate.now()), is(true));
-		error.checkThat(isSameDate(location.getReturnDate(), getDateWithDifferenceOfDays(1)), is(true));
+		//error.checkThat(isSameDate(location.getLocationDate(), LocalDate.now()), is(true));
+		error.checkThat(location.getLocationDate(), isToday());
+		//error.checkThat(isSameDate(location.getReturnDate(), getDateWithDifferenceOfDays(1)), is(true));
+		error.checkThat(location.getReturnDate(), isTodayWithDifferenceDays(1));
 	}
 
 	@Test(expected = Exception.class)

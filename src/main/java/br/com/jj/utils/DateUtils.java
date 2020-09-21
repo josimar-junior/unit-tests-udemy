@@ -2,6 +2,7 @@ package br.com.jj.utils;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DateUtils {
 
@@ -27,5 +28,9 @@ public class DateUtils {
 	
 	public static boolean verifyDayOfWeek(LocalDate date, DayOfWeek day) {
 		return date.getDayOfWeek().equals(day);
+	}
+	
+	public static String dateFormat(LocalDate date, String pattern) {
+		return date.format(DateTimeFormatter.ofPattern(pattern));
 	}
 }
