@@ -1,5 +1,6 @@
 package br.com.jj.utils;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 public class DateUtils {
@@ -24,7 +25,7 @@ public class DateUtils {
 		return date1.isEqual(date2);
 	}
 	
-	public static boolean verifyDayOfWeek(LocalDate date, int day) {
-		return date.getDayOfWeek().getValue() == day;
+	public static boolean verifyDayOfWeek(LocalDate date, DayOfWeek day) {
+		return date.getDayOfWeek().equals(day);
 	}
 }

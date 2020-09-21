@@ -42,7 +42,7 @@ public class LocationService {
 		//Next day delivery
 		LocalDate deliveryDate = LocalDate.now();
 		deliveryDate = addDays(deliveryDate, 1);
-		if(DateUtils.verifyDayOfWeek(deliveryDate, DayOfWeek.SUNDAY.getValue())) {
+		if(DateUtils.verifyDayOfWeek(deliveryDate, DayOfWeek.SUNDAY)) {
 			deliveryDate = addDays(deliveryDate, 1);
 		}
 		location.setReturnDate(deliveryDate);

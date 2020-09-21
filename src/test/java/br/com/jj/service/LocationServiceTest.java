@@ -1,5 +1,6 @@
 package br.com.jj.service;
 
+import static br.com.jj.matcher.OwnMatcher.fallsOnMonday;
 import static br.com.jj.utils.DateUtils.getDateWithDifferenceOfDays;
 import static br.com.jj.utils.DateUtils.isSameDate;
 import static br.com.jj.utils.DateUtils.verifyDayOfWeek;
@@ -7,7 +8,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.time.DayOfWeek;
@@ -42,7 +42,7 @@ public class LocationServiceTest {
 	@Test
 	public void mustRentMovie() throws Exception {
 		
-		Assume.assumeFalse(verifyDayOfWeek(LocalDate.now(), DayOfWeek.SATURDAY.getValue()));
+		Assume.assumeFalse(verifyDayOfWeek(LocalDate.now(), DayOfWeek.SATURDAY));
 		
 		// scenario
 		User user = new User("User 1");
@@ -122,7 +122,7 @@ public class LocationServiceTest {
 	
 	@Test
 	public void mustReturnInTheMondayRentedOnSaturday() throws LocationException, MovieWithoutStockException {
-		Assume.assumeTrue(verifyDayOfWeek(LocalDate.now(), DayOfWeek.SATURDAY.getValue()));
+		Assume.assumeTrue(verifyDayOfWeek(LocalDate.now(), DayOfWeek.SATURDAY));
 		
 		// scenario
 		User user = new User("User 1");
@@ -131,10 +131,8 @@ public class LocationServiceTest {
 		// action
 		Location location = service.rentMovie(user, movies);
 		
-		boolean isMonday = verifyDayOfWeek(location.getReturnDate(), DayOfWeek.MONDAY.getValue());
-		
-		assertTrue(isMonday);
-	
+		// verification
+		assertThat(location.getReturnDate(), fallsOnMonday());
 	}
 	
 	
