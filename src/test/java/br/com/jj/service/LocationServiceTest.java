@@ -1,5 +1,7 @@
 package br.com.jj.service;
 
+import static br.com.jj.builder.MovieBuilder.initMovie;
+import static br.com.jj.builder.UserBuilder.initUser;
 import static br.com.jj.matcher.OwnMatcher.fallsOnMonday;
 import static br.com.jj.matcher.OwnMatcher.isToday;
 import static br.com.jj.matcher.OwnMatcher.isTodayWithDifferenceDays;
@@ -45,12 +47,12 @@ public class LocationServiceTest {
 		Assume.assumeFalse(verifyDayOfWeek(LocalDate.now(), DayOfWeek.SATURDAY));
 		
 		// scenario
-		User user = new User("User 1");
+		User user = initUser().builder();
 		
 		List<Movie> movies = Arrays.asList(
-				new Movie("Movie 1", 2, 5.0),
-				new Movie("Movie 2", 2, 5.0)
-		);
+				initMovie().withPrice(5.0).builder(),
+				initMovie().withPrice(5.0).builder()
+			);
 		
 		// action
 		Location location = service.rentMovie(user, movies);
@@ -66,8 +68,8 @@ public class LocationServiceTest {
 	@Test(expected = Exception.class)
 	public void mustThrowExceptionRentMovie() throws Exception {
 		// scenario
-		User user = new User("User 1");
-		List<Movie> movies = Arrays.asList(new Movie("Movie 1", 0, 5.0));
+		User user = initUser().builder();
+		List<Movie> movies = Arrays.asList(initMovie().withoutStock().builder());
 
 		// action
 		service.rentMovie(user, movies);
@@ -76,8 +78,8 @@ public class LocationServiceTest {
 	@Test
 	public void mustThrowAndCathExceptionRentMovie() {
 		// scenario
-		User user = new User("User 1");
-		List<Movie> movies = Arrays.asList(new Movie("Movie 1", 0, 5.0));
+		User user = initUser().builder();
+		List<Movie> movies = Arrays.asList(initMovie().withoutStock().builder());
 
 		try {
 			// action
@@ -91,8 +93,8 @@ public class LocationServiceTest {
 	@Test
 	public void mustThrowExceptionUsingRuleRentMovie() throws Exception {
 		// scenario
-		User user = new User("User 1");
-		List<Movie> movies = Arrays.asList(new Movie("Movie 1", 0, 5.0));
+		User user = initUser().builder();
+		List<Movie> movies = Arrays.asList(initMovie().withoutStock().builder());
 
 		// action
 		Exception e = assertThrows(Exception.class, () -> service.rentMovie(user, movies));
@@ -102,7 +104,7 @@ public class LocationServiceTest {
 	@Test
 	public void mustThrowExceptionEmptyUser() throws MovieWithoutStockException {
 		// scenario
-		List<Movie> movies = Arrays.asList(new Movie("Movie 1", 1, 5.0));
+		List<Movie> movies = Arrays.asList(initMovie().builder());
 
 		try {
 			service.rentMovie(null, movies);
@@ -115,7 +117,7 @@ public class LocationServiceTest {
 	@Test
 	public void mustThrowExceptionEmptyMovie() throws LocationException {
 		// scenario
-		User user = new User("User 1");
+		User user = initUser().builder();
 
 		// action
 		LocationException e = assertThrows(LocationException.class, () -> service.rentMovie(user, null));
@@ -127,8 +129,8 @@ public class LocationServiceTest {
 		Assume.assumeTrue(verifyDayOfWeek(LocalDate.now(), DayOfWeek.SATURDAY));
 		
 		// scenario
-		User user = new User("User 1");
-		List<Movie> movies = Arrays.asList(new Movie("Movie 1", 1, 4.0));
+		User user = initUser().builder();
+		List<Movie> movies = Arrays.asList(initMovie().withoutStock().builder());
 
 		// action
 		Location location = service.rentMovie(user, movies);
@@ -136,6 +138,5 @@ public class LocationServiceTest {
 		// verification
 		assertThat(location.getReturnDate(), fallsOnMonday());
 	}
-	
 	
 }

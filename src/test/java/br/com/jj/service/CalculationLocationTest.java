@@ -1,5 +1,7 @@
 package br.com.jj.service;
 
+import static br.com.jj.builder.MovieBuilder.initMovie;
+import static br.com.jj.builder.UserBuilder.initUser;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -21,7 +23,7 @@ import br.com.jj.exception.LocationException;
 import br.com.jj.exception.MovieWithoutStockException;
 
 @RunWith(Parameterized.class)
-public class CalculationLocation {
+public class CalculationLocationTest {
 	
 	@Parameter
 	public List<Movie> movies;
@@ -39,13 +41,13 @@ public class CalculationLocation {
 		service = new LocationService();
 	}
 
-	private static Movie movie1 = new Movie("Movie 1", 2, 4.0);
-	private static Movie movie2 = new Movie("Movie 2", 2, 4.0);
-	private static Movie movie3 = new Movie("Movie 3", 2, 4.0);
-	private static Movie movie4 = new Movie("Movie 4", 2, 4.0);
-	private static Movie movie5 = new Movie("Movie 5", 2, 4.0);
-	private static Movie movie6 = new Movie("Movie 6", 2, 4.0);
-	private static Movie movie7 = new Movie("Movie 7", 2, 4.0);
+	private static Movie movie1 = initMovie().builder();
+	private static Movie movie2 = initMovie().builder();
+	private static Movie movie3 = initMovie().builder();
+	private static Movie movie4 = initMovie().builder();
+	private static Movie movie5 = initMovie().builder();
+	private static Movie movie6 = initMovie().builder();
+	private static Movie movie7 = initMovie().builder();
 	
 	@Parameters(name="{2}")
 	public static Collection<Object[]> getProperties() {
@@ -62,7 +64,7 @@ public class CalculationLocation {
 	@Test
 	public void mustCalculationLocationWithDiscount() throws LocationException, MovieWithoutStockException {
 		// scenario
-		User user = new User("User 1");
+		User user = initUser().builder();
 
 		// action
 		Location location = service.rentMovie(user, movies);
